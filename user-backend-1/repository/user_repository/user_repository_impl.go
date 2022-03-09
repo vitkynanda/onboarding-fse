@@ -1,6 +1,7 @@
 package user_repository
 
 import (
+	"fmt"
 	"go-api/models/entity"
 
 	"github.com/google/uuid"
@@ -63,9 +64,17 @@ func (repo *userRepository) UpdateUserData(user entity.User, id string ) (*entit
 	return &user, nil
 }
 
-func (repo *userRepository) DeleteUserById( id string) error {
-	if err := repo.mysqlConnection.Delete(&entity.User{}, id).Error; err != nil  {
+func (repo *userRepository) DeleteUserById(id string) error {
+	sql := "DELETE FROM users"
+	
+	sql = fmt.Sprintf("%s WHERE id = '%s'", sql, id)
+
+	if err := repo.mysqlConnection.Raw(sql).Scan(entity.User{}).Error; err != nil  {
+		
 		return err
 	}
+	// if err := repo.mysqlConnection.Delete(&entity.User{}, id).Error; err != nil  {
+	// 	return err
+	// }
 	return nil
 }

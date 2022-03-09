@@ -51,21 +51,29 @@ const Row = ({ row }) => {
 
   const { mutate: editUser } = useMutation((data) => editUserData(data), {
     onSuccess: (data) => {
-      if (data.status === "ok") {
-        toast.success("Edited user data successfully");
+      if (data.status_code === 200) {
         queryClient.invalidateQueries("users");
+        toast.success(data.message);
       } else {
-        data.errors.map((err) => toast.error(err));
+        toast.error(data.message);
       }
+    },
+    onError: (err) => {
+      toast.error(err.message);
     },
   });
 
   const { mutate: deleteUser } = useMutation((data) => deleteUserData(data), {
     onSuccess: (data) => {
-      if (data.status === "ok") {
-        toast.success(data.message);
+      if (data.status_code === 200) {
         queryClient.invalidateQueries("users");
+        toast.success(data.message);
+      } else {
+        toast.error(data.message);
       }
+    },
+    onError: (err) => {
+      toast.error(err.message);
     },
   });
 

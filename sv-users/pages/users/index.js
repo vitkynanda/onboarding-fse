@@ -22,7 +22,7 @@ export default function Users() {
     gender: "L",
     birthdate: "1995-12-20",
     active: true,
-    contacts: {
+    contact: {
       email: "vitkynptr@gmail.com",
       phone: "0181123123",
     },
@@ -36,10 +36,16 @@ export default function Users() {
 
   const { mutate: addUser } = useMutation((data) => createNewUser(data), {
     onSuccess: (data) => {
-      if (data.statusCode === 200) {
+      console.log(data);
+      if (data.status_code === 200) {
         queryClient.invalidateQueries("users");
-        toast.success("New user created successfully");
+        toast.success(data.message);
+      } else {
+        toast.error(data.message);
       }
+    },
+    onError: (err) => {
+      toast.error(err.message);
     },
   });
 

@@ -65,7 +65,6 @@ func (res *userDelivery) UpdateUserData(c *gin.Context) {
   	id := c.Param("id")
 	request := dto.User{}
 
-	
 	if err := c.ShouldBindJSON(&request); err != nil {
 		errorMessages :=  []string{}
 	
@@ -73,6 +72,7 @@ func (res *userDelivery) UpdateUserData(c *gin.Context) {
 		for _, e :=  range err.(validator.ValidationErrors) {
 			errorMessage := fmt.Sprintf("Error on Field %s, condition: %s", e.Field(), e.ActualTag())
 			errorMessages = append(errorMessages,  errorMessage)
+			
 		} 
 		
 		if len(errorMessages) > 0 {
